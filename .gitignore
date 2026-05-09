@@ -5,3 +5,4 @@ memo for dev/
 .tools/
 .venv/
 pytest-cache-files-*/
+node.zip
