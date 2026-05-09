@@ -1,0 +1,765 @@
+{
+  "id": "8a6e7286-37cd-41a4-8b48-59df3cac192d",
+  "revision": 0,
+  "last_node_id": 14,
+  "last_link_id": 14,
+  "nodes": [
+    {
+      "id": 6,
+      "type": "VAEDecode",
+      "pos": [
+        2306.389344996903,
+        519.3526535537186
+      ],
+      "size": [
+        140,
+        46
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 5
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "VAEDecode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "SaveImage",
+      "pos": [
+        2478.538413533571,
+        519.3526535537186
+      ],
+      "size": [
+        307.96079589843794,
+        270.00000000000006
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 7
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "SaveImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1652.512732992987,
+        425.3245268164755
+      ],
+      "size": [
+        294.74375,
+        104.04354370117187
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 11
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "CLIPTextEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1652.512732992987,
+        587.6175774069584
+      ],
+      "size": [
+        295.6777759103144,
+        88
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 12
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "CLIPTextEncode",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 5,
+      "type": "EmptyLatentImage",
+      "pos": [
+        1652.512732992987,
+        741.3492832936242
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "EmptyLatentImage",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 11,
+      "type": "PreviewAny",
+      "pos": [
+        1088.6704593550778,
+        347.07371133012606
+      ],
+      "size": [
+        358.1388953173216,
+        242.13960275665272
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 13
+        }
+      ],
+      "outputs": [],
+      "title": "PositivePrompt Text",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "PreviewAny",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "id": 12,
+      "type": "PreviewAny",
+      "pos": [
+        1091.267162744581,
+        650.5830327486731
+      ],
+      "size": [
+        360.12292685961893,
+        185.53409833605951
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 14
+        }
+      ],
+      "outputs": [],
+      "title": "NegativePrompt Text",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "PreviewAny",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "id": 4,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        1656.3671280238661,
+        256.5610565256608
+      ],
+      "size": [
+        281.9,
+        98
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            11,
+            12
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "CheckpointLoaderSimple",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "sd_xl_base_1.0.safetensors"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "VAELoader",
+      "pos": [
+        1979.9344115397266,
+        295.74676898948036
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "VAELoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        "sdxl_vae.safetensors"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "ExternalPromptRequester",
+      "pos": [
+        722.5827420749594,
+        304.22810540331477
+      ],
+      "size": [
+        276.759375,
+        478
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "prompt_1",
+          "type": "STRING",
+          "links": [
+            9,
+            13
+          ]
+        },
+        {
+          "name": "prompt_2",
+          "type": "STRING",
+          "links": [
+            10,
+            14
+          ]
+        },
+        {
+          "name": "prompt_3",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "prompt_4",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "prompt_5",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "prompt_6",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "prompt_7",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "prompt_8",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "prompt_9",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "prompt_10",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "aux_id": "maigonia/comfyui-yumil-mpm",
+        "ver": "cb771b84898570cb6af76bc8b079a1b4255d8281",
+        "Node name for S&R": "ExternalPromptRequester",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        240,
+        "PositivePrompt",
+        "NegativePrompt",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": 14,
+      "type": "Note",
+      "pos": [
+        1194.0350507337946,
+        -137.9417130179159
+      ],
+      "size": [
+        246.97653457563047,
+        282.16257055134855
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "template",
+      "properties": {
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.7",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "@@@_LoraUtility.Pick(first=-1)_@@@,\n@@@_Angle_@@@,\n\n@@@_Pose_@@@,\n\n@@@_Backgrounds_@@@,\n\n@@@_Character1_@@@,\n@@@_Character1Details.Pick(random=-1)_@@@,\n\n@@@_Character2_@@@,\n@@@_Character2Details.Pick(random=-1)_@@@,\n\n@@@_Etc_@@@,\n\n@@@_Effects.Pick(random=-1)_@@@,\n@@@_Style.Pick(first=-1)_@@@,\n@@@_Quality_@@@"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "pos": [
+        713.8976908869033,
+        -276.28121467852526
+      ],
+      "size": [
+        456.90418437311087,
+        427.41823712213056
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Yumil MPM Note",
+      "properties": {
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.7",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "## Requirements\n- Extension: comfyui-yumil-mpm\n- Application: Yumil MPM\n---\n## Before You Start\n\n- If this is your first time using Yumil MPM, it is a good idea to create a sample project from the app and read at least the introductory tutorial first.\n---\n## Setup Steps in Yumil MPM\n\n1. Launch Yumil MPM.\n2. In the CategoryTree, create a category named \"PositivePrompt\".\n3. Check the checkbox next to the PositivePrompt category.\n4. Add a new prompt to the PromptTree.\n5. Edit the prompt text in the PromptEditor.\n6. Check the checkbox next to the prompt in the PromptTree.\n7. Repeat steps 2 through 6 for \"NegativePrompt\".\n8. Press the Demand button in the Generation panel.\n9. Return to ComfyUI and press the Run button.\n---\n## Notes\n\n- If multiple prompts are checked in the PromptTree, one prompt is selected randomly by default.\n- To generate output, at least one category in the CategoryTree and at least one prompt in the PromptTree must be checked.\n- Categories checked in the CategoryTree are sent to ComfyUI. To use categories other than \"PositivePrompt\" and \"NegativePrompt\", add those category names to the ExternalPromptRequester node.\n- The template sample on the right is provided as an optional example for generating more varied results. It is not required for this workflow. To learn more, search for \"Category Identifier\" in the Yumil MPM instructions."
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 3,
+      "type": "KSampler",
+      "pos": [
+        2014.6621106442158,
+        519.3526535537186
+      ],
+      "size": [
+        270,
+        262
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 1
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 2
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.18.1",
+        "Node name for S&R": "KSampler",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.8"
+        }
+      },
+      "widgets_values": [
+        1113136558924967,
+        "randomize",
+        30,
+        5.4,
+        "euler_ancestral",
+        "normal",
+        1
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      3,
+      4,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      5,
+      0,
+      3,
+      3,
+      "LATENT"
+    ],
+    [
+      5,
+      3,
+      0,
+      6,
+      0,
+      "LATENT"
+    ],
+    [
+      7,
+      6,
+      0,
+      8,
+      0,
+      "IMAGE"
+    ],
+    [
+      8,
+      9,
+      0,
+      6,
+      1,
+      "VAE"
+    ],
+    [
+      9,
+      10,
+      0,
+      1,
+      1,
+      "STRING"
+    ],
+    [
+      10,
+      10,
+      1,
+      2,
+      1,
+      "STRING"
+    ],
+    [
+      11,
+      4,
+      1,
+      1,
+      0,
+      "CLIP"
+    ],
+    [
+      12,
+      4,
+      1,
+      2,
+      0,
+      "CLIP"
+    ],
+    [
+      13,
+      10,
+      0,
+      11,
+      0,
+      "STRING"
+    ],
+    [
+      14,
+      10,
+      1,
+      12,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "Yumil",
+      "bounding": [
+        694.3855726217506,
+        216.58929028678608,
+        783.2516800631989,
+        650.8835110054122
+      ],
+      "color": "#8A8",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ue_links": [],
+    "ds": {
+      "scale": 0.9090909090909097,
+      "offset": [
+        -67.6262428045203,
+        416.74169234253014
+      ]
+    },
+    "links_added_by_ue": [],
+    "frontendVersion": "1.42.10",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

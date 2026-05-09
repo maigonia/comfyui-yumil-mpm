@@ -2,21 +2,22 @@
 
 [English](README.md) | 日本語
 
-[Yumil MPM](https://github.com/maigonia/YumilMPM)と連携する [ComfyUI](https://github.com/comfyanonymous/ComfyUI) カスタムノードです。AI画像生成のプロンプト管理を効率化します。
+[Yumil MPM](https://github.com/maigonia/YumilMPM) と連携するための [ComfyUI](https://github.com/comfyanonymous/ComfyUI) カスタムノード集です。Yumil MPM で管理・生成したプロンプトを ComfyUI のワークフローへ取り込み、プロンプト内に埋め込んだ画像パスやパラメータも扱えるようにします。
 
 ## 必要なもの
 
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 - [Yumil MPM](https://github.com/maigonia/YumilMPM)
 
 ## インストール
 
 ### ComfyUI Manager
 
-登録準備中です。現在は下記の手動インストールをご利用ください。
+登録準備中です。現時点では下記の手動インストールをご利用ください。
 
 ### 手動インストール
 
-ComfyUI の `custom_nodes` フォルダにクローンします:
+ComfyUI の `custom_nodes` フォルダにこのリポジトリを clone してください。
 
 ```bash
 cd ComfyUI/custom_nodes
@@ -31,159 +32,181 @@ pip install -r requirements.txt
 
 ### External Prompt Requester
 
-**カテゴリ:** Yumil/API
+**カテゴリ:** `Yumil/API`
 
-Yumil MPM にプロンプト生成をリクエストします。Yumil MPM の On-Demand Generation が有効な間、ワークフローがこのノードを通るたびに Yumil MPM へ生成要求が送られ、自動生成された結果を受け取ります。最大10個のカテゴリ名を接続し、それぞれの生成結果を取得できます。
+Yumil MPM にプロンプト生成をリクエストします。Yumil MPM 側で On-Demand Generation が有効な間、このノードをワークフローが通過するたびに Yumil MPM へ生成リクエストを送り、生成されたプロンプトを受け取ります。最大10個のカテゴリ名を指定できます。
 
 **セットアップ:**
+
 1. Yumil MPM を起動します。
-2. 左下の Generation パネル内にある **Demand** ボタンを押して On-Demand Generation を有効にします。
+2. Generation パネルの **Demand** ボタンを押して On-Demand Generation を有効にします。
+3. Yumil MPM の API Server を有効にし、API key が生成されていることを確認します。
 
 **入力:**
-- `timeout_seconds` — リクエストタイムアウト（5〜600秒、デフォルト: 240）
-- `prompt_1` 〜 `prompt_10` — プロンプトを取得するカテゴリ名
+
+- `timeout_seconds`: リクエストのタイムアウト秒数。5から600まで指定できます。デフォルトは `240` です。
+- `prompt_1` から `prompt_10`: プロンプトを取得したいカテゴリ名。
 
 **出力:**
-- `prompt_1` 〜 `prompt_10` — 各カテゴリの生成されたプロンプトテキスト
+
+- `prompt_1` から `prompt_10`: 各カテゴリで生成されたプロンプト。
 
 ### Yumil Prompt Parser
 
-**カテゴリ:** Yumil/Prompt
+**カテゴリ:** `Yumil/Prompt`
+
+以下の形式のブロックを含むプロンプトを解析します。
+
+```text
+###_Path(...).Value(...).Text(...)_###
+```
+
+各要素は省略できます。
+
+- `Path(...)`: カンマ区切りで複数のファイルパスを指定できます。画像以外のパスも扱えます。
+- `Value(...)`: `strength=0.8,mode=ipadapter` のような `key=value` パラメータを指定できます。
+- `Text(...)`: プロンプト本文です。`Text(...)` があるブロックは clean text 内でその本文に置き換えられ、`Text(...)` がないブロックは clean text から取り除かれます。
 
 **主な用途:**
-- プロンプトに含まれたファイルパスやパラメータを取得したいとき（ControlNet/IPAdapter の参照画像など）
-- 複数のパスをまとめて1つのブロックで扱いたいとき（複数の参照画像など）
-- パスとkey-valueパラメータ、テキストをセットで扱いたいとき
 
-`###_Path(...).Value(...).Text(...)_###` 形式のパーサーブロックを含むプロンプトテキストを解析します。各要素（Path、Value、Text）は省略可能です。
-
-- **Path** — カンマ区切りで複数のパスを指定可能（例: `Path(img0.png,img1.png)`）。画像に限らず任意のファイルパスを渡せます
-- **Value** — カンマ区切りの `key=value` 形式でパラメータを自由に追加可能（例: `Value(strength=0.8,mode=ipadapter)`）
-- **Text** — プロンプトテキスト。複数行対応
-
-`Text()` を持つブロックはテキスト値に置換され、持たないブロックは除去されます。1つのプロンプトに複数のブロックが含まれていてもまとめてパースでき、各要素の中身はエスケープ不要で改行や特殊文字、ネストされた括弧もそのまま使えます。
+- プロンプト内に埋め込んだ参照画像パスを取り出す。
+- ControlNet や IPAdapter などに渡すパラメータをプロンプトと一緒に管理する。
+- テキスト、ファイルパス、パラメータをひとつのプロンプト文字列として扱う。
 
 **例:**
-- `###_Path(img0.png,img1.png).Value(strength=0.8,mode=ipadapter).Text(hello)_###` — 複数パス、パラメータ、テキストを全て取得。プロンプト中で `hello` に置換
-- `###_Path(img.png).Text(hello)_###` — パスとテキストを取得。`hello` に置換
-- `###_Path(img.png)_###` — パスを取得。プロンプトからタグを除去
-- `###_Value(mode=test).Text(hello)_###` — パスなしでパラメータとテキストを取得
+
+```text
+###_Path(img0.png,img1.png).Value(strength=0.8,mode=ipadapter).Text(hello)_###
+###_Path(img.png).Text(hello)_###
+###_Path(img.png)_###
+###_Value(mode=test).Text(hello)_###
+```
 
 **入力:**
-- `prompt` — プロンプトテキスト（パーサーブロックを含む場合あり）
+
+- `prompt`: パーサーブロックを含む可能性のあるプロンプト文字列。
 
 **出力:**
-- `clean_text` — ブロックが置換/除去されたプロンプト
-- `block_count` — 検出されたブロックの数
-- `PARSED_DATA` — 下流ノード用の構造化データ
+
+- `clean_text`: ブロックが置換または削除されたプロンプト。
+- `block_count`: 検出されたブロック数。
+- `PARSED_DATA`: 後続ノードで使うための構造化データ。
 
 ### Yumil Block Selector
 
-**カテゴリ:** Yumil/Block
+**カテゴリ:** `Yumil/Block`
 
-**主な用途:**
-- パースされたブロックからパス、パラメータ、テキストを取り出したいとき
-- パスを Yumil Image Loader や他のノードに渡したいとき
-- パラメータを Yumil Value Reader で読み取りたいとき
-
-解析データからインデックスを指定してブロックを1つ選択し、各コンポーネントを取り出します。`Path()` 内のカンマ区切りのパスは個別出力（最大4つ）に分割されます。Yumil Prompt Parser の `PARSED_DATA` を接続してください。異なるインデックスで複数インスタンスを使用すると、個別のブロックを取り出せます。
+Yumil Prompt Parser の `PARSED_DATA` から、指定したインデックスのブロックを1つ取り出します。複数のブロックを使いたい場合は、このノードを複数配置して別々の `index` を指定してください。
 
 **入力:**
-- `parsed_data` — Yumil Prompt Parser から接続
-- `index` — ブロックインデックス（0始まり）
+
+- `parsed_data`: Yumil Prompt Parser から接続します。
+- `index`: 取り出すブロックのインデックス。0始まりです。
 
 **出力:**
-- `path_0` 〜 `path_3` — 個別のパス（存在しない場合は空文字列）
-- `path_count` — ブロック内のパスの数
-- `value` — key=value パラメータ文字列（そのまま）
-- `text` — 関連テキスト
+
+- `path_0` から `path_3`: `Path(...)` 内の個別パス。
+- `path_count`: 選択したブロック内のパス数。
+- `value`: `key=value` パラメータ文字列。
+- `text`: 関連するテキスト。
 
 ### Yumil Image Loader
 
-**カテゴリ:** Yumil/Image
+**カテゴリ:** `Yumil/Image`
 
-**主な用途:**
-- Yumil Block Selector のパス出力から画像を読み込みたいとき
-- ファイルパス文字列から画像を読み込みたいとき
-
-ファイルパスから画像を1枚読み込みます。リサイズオプション付き。Yumil Block Selector のパス出力や、任意の STRING パスを接続できます。
+ファイルパスから画像を1枚読み込み、ComfyUI の `IMAGE` テンソルに変換します。Yumil Block Selector のパス出力、または任意の文字列パスを接続できます。
 
 **入力:**
-- `path` — 画像ファイルパス
-- `resize_mode` — `disabled`、`stretch`、`crop_center`、`pad_white`
-- `target_total` — 幅+高さの合計目標値（例: SDXL なら 2048）。0 = リサイズなし。
-- `width` / `height`（オプション）— サイズを直接指定。
+
+- `path`: 画像ファイルのパス。
+- `resize_mode`: `disabled`, `stretch`, `crop_center`, `pad_white`。
+- `target_total`: 幅と高さの合計目標値。SDXL なら `2048` など。`0` の場合はこの指定によるリサイズを行いません。
+- `width` / `height` 任意: 明示的にサイズを指定します。
 
 **出力:**
-- `image` — 読み込まれた画像テンソル
-- `width` / `height` — 画像の寸法
+
+- `image`: 読み込まれた画像テンソル。
+- `width` / `height`: 画像サイズ。
 
 ### Yumil Value Reader
 
-**カテゴリ:** Yumil/Block
+**カテゴリ:** `Yumil/Block`
 
-**主な用途:**
-- key=value 文字列から特定のパラメータを取得したいとき（例: `strength=0.8,mode=ipadapter`）
-- 複数のキーを読み取る場合はインスタンスを複数使用
-
-カンマ区切りの `key=value` 文字列から指定したキーの値を読み取ります。キーが見つからない場合はデフォルト値を返します。
+カンマ区切りの `key=value` 文字列から、指定したキーの値を取り出します。キーが見つからない場合はデフォルト値を返します。
 
 **入力:**
-- `value` — Block Selector からの key=value 文字列
-- `key` — 取得するキー名
-- `default_value` — キーが見つからない場合の戻り値（デフォルト: 空文字列）
+
+- `value`: Yumil Block Selector からの `key=value` 文字列。
+- `key`: 取得したいキー名。
+- `default_value`: キーが見つからなかった場合に返す値。
 
 **出力:**
-- `result` — 指定したキーの値
+
+- `result`: 指定キーの値。
 
 ### Yumil Lora Stripper
 
-**カテゴリ:** Yumil/Prompt
+**カテゴリ:** `Yumil/Prompt`
 
-テキストから `<lora:名前:重み>` タグを全て抽出・除去します。
+テキストから `<lora:name:weight>` 形式の LoRA タグをすべて抽出し、本文から取り除きます。
 
 **入力:**
-- `text` — LoRA タグを含むテキスト
+
+- `text`: LoRA タグを含むテキスト。
 
 **出力:**
-- `text` — LoRA タグが除去されたテキスト
-- `loras` — 抽出された LoRA タグ（連結）
+
+- `text`: LoRA タグが取り除かれたテキスト。
+- `loras`: 抽出された LoRA タグ。
 
 ### Yumil Text Join
 
-**カテゴリ:** Yumil/Prompt
+**カテゴリ:** `Yumil/Prompt`
 
-最大7つのテキスト入力を指定した区切り文字で結合します。空の入力はスキップされます。
+最大7つのテキスト入力を、指定した区切り文字で結合します。空の入力はスキップされます。
 
 **入力:**
-- `delimiter` — 区切り文字（デフォルト: `, `）
-- `text_0` 〜 `text_6` — テキスト入力
+
+- `delimiter`: 区切り文字。デフォルトは `, ` です。
+- `text_0` から `text_6`: 結合するテキスト。
 
 **出力:**
-- `text` — 結合結果
+
+- `text`: 結合結果。
 
 ### Yumil Batch Save
 
-**カテゴリ:** Yumil/IO
+**カテゴリ:** `Yumil/IO`
 
-最大6枚の画像（JPEG）とオプションのテキストファイルを指定フォルダに保存します。
+最大6枚の画像を JPEG として保存し、任意でテキストファイルも同じフォルダに保存します。
 
 **入力:**
-- `parent_folder` — 出力先ディレクトリのパス
-- `folder_name` — サブフォルダ名（ファイル名のプレフィックスとしても使用）
-- `text`（オプション）— `{folder_name}.txt` として保存
-- `image_0` 〜 `image_5` — `{folder_name}_0.jpg` 等として保存
 
-## テストの実行
+- `parent_folder`: 出力先ディレクトリ。
+- `folder_name`: 作成するサブフォルダ名。ファイル名のプレフィックスとしても使われます。
+- `text` 任意: `{folder_name}.txt` として保存されます。
+- `image_0` から `image_5`: `{folder_name}_0.jpg` のように保存されます。
+
+## 参考ワークフロー
+
+ComfyUI 用の参考ワークフローを [`workflow`](workflow) フォルダに同梱しています。
+
+- [`Simple Example.json`](workflow/Simple%20Example.json): Yumil MPM から Positive / Negative プロンプトを取得する最小構成の例です。
+- [`Simple Text To Image With Yumil MPM.json`](workflow/Simple%20Text%20To%20Image%20With%20Yumil%20MPM.json): Yumil MPM のプロンプトカテゴリを使う Text to Image ワークフローです。
+- [`Controlnet With Yumil MPM.json`](workflow/Controlnet%20With%20Yumil%20MPM.json): パーサー形式のプロンプトデータを使う ControlNet ワークフロー例です。
+
+一部のワークフローでは追加の ComfyUI カスタムノードやモデルファイルが必要です。必要な拡張機能やモデルは、各ワークフロー内のメモを確認してください。
+
+## テスト
 
 ```bash
-cd tests
 python -m pytest -v
 ```
 
 ## リンク
 
-- [Yumil MPM (GitHub)](https://github.com/maigonia/YumilMPM)
+- [Yumil MPM](https://github.com/maigonia/YumilMPM)
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 
 ## ライセンス
 

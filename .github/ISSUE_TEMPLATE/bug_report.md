@@ -1,51 +1,61 @@
 ---
-name: 🐛 Bug report
+name: Bug report
 about: Report a bug in the ComfyUI extension
 title: "[Bug] "
 labels: bug
 ---
 
-> You can write this issue in **English or Japanese / 英語または日本語**で記入できます。
+> You can write this issue in English or Japanese.
+> この Issue は英語または日本語で記入できます。
 
 ## Description / 内容
 
 A clear description of the bug.
-バグの内容を簡潔に教えてください。
 
-## Steps to reproduce / 再現手順
+バグの内容を簡潔に説明してください。
+
+## Steps to Reproduce / 再現手順
 
 1. ...
 2. ...
 3. ...
 
-## Expected behavior / 期待する挙動
+## Expected Behavior / 期待する動作
 
 What you expected to happen.
-本来どうなるべきか。
 
-## Actual behavior / 実際の挙動
+本来どのように動作するべきかを書いてください。
 
-What actually happened (error messages, unexpected output, etc.).
-実際にどうなったか（エラーメッセージ、予想外の出力など）。
+## Actual Behavior / 実際の動作
+
+What actually happened, including error messages or unexpected output if available.
+
+実際に起きたことを書いてください。エラーメッセージや想定外の出力があれば含めてください。
 
 ## Environment / 環境
 
 - OS: Windows / macOS / Linux
 - ComfyUI version:
 - ComfyUI install method: portable / Manager / manual
-- comfyui-yumil-mpm version (or commit hash):
-- Yumil MPM version: 1.0.0
-- Python version (if known):
+- comfyui-yumil-mpm version or commit hash:
+- Yumil MPM version:
+- Python version, if known:
 
-## ComfyUI workflow / 使用ワークフロー（任意）
+## ComfyUI Workflow / 使用ワークフロー
 
 If applicable, attach the workflow JSON or describe the node graph.
-該当ワークフローの JSON を添付するか、ノードグラフの構成を説明してください。
 
-## Console output / コンソール出力
+可能であれば、ワークフロー JSON を添付するか、ノード構成を説明してください。
 
+## Console Output / コンソール出力
+
+```text
+Paste relevant ComfyUI console output here.
+ComfyUI の関連するコンソール出力をここに貼り付けてください。
 ```
-（ComfyUI 起動コンソールに出ているエラーログをここに貼り付け）
-```
 
-## Additional context / 補足
+## Additional Context / 補足
+
+Add any other context about the problem here.
+
+その他の補足情報があれば記入してください。

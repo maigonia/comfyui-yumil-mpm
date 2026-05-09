@@ -1,18 +1,19 @@
 # comfyui-yumil-mpm
 
-English | [日本語](README_ja.md)
+English | [Japanese](README_ja.md)
 
-Custom nodes for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) that integrate with [Yumil MPM](https://github.com/maigonia/YumilMPM) — a prompt management tool for AI image generation.
+Custom nodes for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) that integrate with [Yumil MPM](https://github.com/maigonia/YumilMPM), a prompt management tool for AI image generation.
 
 ## Requirements
 
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 - [Yumil MPM](https://github.com/maigonia/YumilMPM)
 
 ## Installation
 
 ### ComfyUI Manager
 
-Registration is in preparation. Please use the manual installation below for now.
+Registration is in preparation. Please use the manual installation steps for now.
 
 ### Manual
 
@@ -31,159 +32,181 @@ Restart ComfyUI after installation.
 
 ### External Prompt Requester
 
-**Category:** Yumil/API
+**Category:** `Yumil/API`
 
-Requests prompt generation from Yumil MPM. While Yumil MPM's On-Demand Generation is active, each time the workflow passes through this node, a generation request is sent to Yumil MPM and the auto-generated result is returned. Connect up to 10 category names and receive the generated prompt text for each.
+Requests prompt generation from Yumil MPM. While Yumil MPM's On-Demand Generation is active, each time the workflow passes through this node, a generation request is sent to Yumil MPM and the generated results are returned. You can connect up to 10 category names and receive generated prompt text for each category.
 
 **Setup:**
+
 1. Launch Yumil MPM.
-2. Press the **Demand** button in the Generation panel (bottom-left) to enable On-Demand Generation.
+2. Press the **Demand** button in the Generation panel to enable On-Demand Generation.
+3. Make sure the Yumil MPM API server is enabled and an API key has been generated.
 
 **Inputs:**
-- `timeout_seconds` — Request timeout (5–600s, default: 240)
-- `prompt_1` to `prompt_10` — Category names to request prompts for
+
+- `timeout_seconds`: request timeout in seconds, from 5 to 600. Default: `240`.
+- `prompt_1` to `prompt_10`: category names to request prompts for.
 
 **Outputs:**
-- `prompt_1` to `prompt_10` — Generated prompt text for each category
+
+- `prompt_1` to `prompt_10`: generated prompt text for each category.
 
 ### Yumil Prompt Parser
 
-**Category:** Yumil/Prompt
+**Category:** `Yumil/Prompt`
+
+Parses prompt text containing blocks in this format:
+
+```text
+###_Path(...).Value(...).Text(...)_###
+```
+
+Each element is optional.
+
+- `Path(...)`: one or more comma-separated file paths. These are not limited to images.
+- `Value(...)`: comma-separated `key=value` parameters, such as `strength=0.8,mode=ipadapter`.
+- `Text(...)`: prompt text. Blocks with `Text(...)` are replaced by that text in the clean prompt output. Blocks without `Text(...)` are removed from the clean prompt output.
 
 **Use cases:**
-- Extract file paths and parameters embedded in prompts (e.g. reference images for ControlNet/IPAdapter)
-- Bundle multiple paths in a single block (e.g. multiple reference images)
-- Handle paths paired with key-value parameters and prompt text
 
-Parses prompt text containing `###_Path(...).Value(...).Text(...)_###` blocks. Each element (Path, Value, Text) is optional.
-
-- **Path** — Supports multiple comma-separated paths (e.g. `Path(img0.png,img1.png)`). Not limited to images — any file path can be passed
-- **Value** — Comma-separated `key=value` parameters (e.g. `Value(strength=0.8,mode=ipadapter)`)
-- **Text** — Prompt text content. Supports multiple lines
-
-Blocks with `Text()` are replaced by their text value in the clean output; blocks without `Text()` are removed. Multiple blocks in a single prompt can be parsed at once. Inside each element, raw content is used as-is — no escape sequences needed. Newlines, special characters, and nested parentheses all work naturally.
+- Extract reference image paths embedded in prompts.
+- Pass metadata such as ControlNet or IPAdapter parameters through the workflow.
+- Keep prompt text, file paths, and parameter values bundled together in a single prompt string.
 
 **Examples:**
-- `###_Path(img0.png,img1.png).Value(strength=0.8,mode=ipadapter).Text(hello)_###` — Multiple paths, parameters, and text are all extracted; tag is replaced with `hello` in the prompt
-- `###_Path(img.png).Text(hello)_###` — Path and text extracted; tag is replaced with `hello`
-- `###_Path(img.png)_###` — Path extracted; tag is removed from the prompt
-- `###_Value(mode=test).Text(hello)_###` — Parameters and text extracted without a path
+
+```text
+###_Path(img0.png,img1.png).Value(strength=0.8,mode=ipadapter).Text(hello)_###
+###_Path(img.png).Text(hello)_###
+###_Path(img.png)_###
+###_Value(mode=test).Text(hello)_###
+```
 
 **Inputs:**
-- `prompt` — Prompt text (may contain parser blocks)
+
+- `prompt`: prompt text that may contain parser blocks.
 
 **Outputs:**
-- `clean_text` — Prompt with blocks replaced/removed
-- `block_count` — Number of blocks found
-- `PARSED_DATA` — Structured data for downstream nodes
+
+- `clean_text`: prompt text with blocks replaced or removed.
+- `block_count`: number of detected blocks.
+- `PARSED_DATA`: serialized structured data for downstream nodes.
 
 ### Yumil Block Selector
 
-**Category:** Yumil/Block
+**Category:** `Yumil/Block`
 
-**Use cases:**
-- Extract paths, parameters, and text from parsed blocks
-- Feed paths to Yumil Image Loader or other nodes
-- Feed parameters to Yumil Value Reader
-
-Selects a single block from parsed data by index and extracts its components. Comma-separated paths in `Path()` are split into individual outputs (up to 4). Connect `PARSED_DATA` from Yumil Prompt Parser. Use multiple instances with different indices to extract individual blocks.
+Selects one parsed block by index and extracts its components. Connect `PARSED_DATA` from Yumil Prompt Parser. Use multiple instances with different indices to extract multiple blocks.
 
 **Inputs:**
-- `parsed_data` — Connect from Yumil Prompt Parser
-- `index` — Block index (0-based)
+
+- `parsed_data`: output from Yumil Prompt Parser.
+- `index`: zero-based block index.
 
 **Outputs:**
-- `path_0` to `path_3` — Individual paths (empty string if not present)
-- `path_count` — Number of paths in the block
-- `value` — Raw key=value parameter string
-- `text` — Associated text content
+
+- `path_0` to `path_3`: individual paths from `Path(...)`.
+- `path_count`: number of paths in the selected block.
+- `value`: raw `key=value` parameter string.
+- `text`: associated text content.
 
 ### Yumil Image Loader
 
-**Category:** Yumil/Image
+**Category:** `Yumil/Image`
 
-**Use cases:**
-- Load an image from a path output of Yumil Block Selector
-- Load any image from a file path string
-
-Loads a single image from a file path with optional resize. Connect a path output from Yumil Block Selector, or any STRING path.
+Loads a single image from a file path and converts it to a ComfyUI `IMAGE` tensor. It can receive a path from Yumil Block Selector or any string path.
 
 **Inputs:**
-- `path` — Image file path
-- `resize_mode` — `disabled`, `stretch`, `crop_center`, or `pad_white`
-- `target_total` — Target width+height sum (e.g. 2048 for SDXL). 0 = no resize.
-- `width` / `height` (optional) — Override dimensions.
+
+- `path`: image file path.
+- `resize_mode`: `disabled`, `stretch`, `crop_center`, or `pad_white`.
+- `target_total`: target width plus height, such as `2048` for SDXL. `0` disables this resize target.
+- `width` / `height` optional: explicit size override.
 
 **Outputs:**
-- `image` — Loaded image tensor
-- `width` / `height` — Image dimensions
+
+- `image`: loaded image tensor.
+- `width` / `height`: image dimensions.
 
 ### Yumil Value Reader
 
-**Category:** Yumil/Block
+**Category:** `Yumil/Block`
 
-**Use cases:**
-- Extract a specific parameter from a key=value string (e.g. `strength=0.8,mode=ipadapter`)
-- Use multiple instances to read different keys
-
-Reads a specific key from a comma-separated `key=value` string and returns the corresponding value. If the key is not found, returns the default value.
+Reads a specific key from a comma-separated `key=value` string and returns the corresponding value. If the key is not found, it returns the configured default value.
 
 **Inputs:**
-- `value` — Key=value string from Block Selector
-- `key` — Key to look up
-- `default_value` — Returned if key is not found (default: empty string)
+
+- `value`: key-value string from Yumil Block Selector.
+- `key`: key to look up.
+- `default_value`: returned when the key is not found.
 
 **Outputs:**
-- `result` — The value for the specified key
+
+- `result`: value for the specified key.
 
 ### Yumil Lora Stripper
 
-**Category:** Yumil/Prompt
+**Category:** `Yumil/Prompt`
 
 Extracts and removes all `<lora:name:weight>` tags from text.
 
 **Inputs:**
-- `text` — Text containing lora tags
+
+- `text`: text containing LoRA tags.
 
 **Outputs:**
-- `text` — Clean text with lora tags removed
-- `loras` — Extracted lora tags concatenated
+
+- `text`: clean text with LoRA tags removed.
+- `loras`: extracted LoRA tags concatenated together.
 
 ### Yumil Text Join
 
-**Category:** Yumil/Prompt
+**Category:** `Yumil/Prompt`
 
 Joins up to 7 text inputs with a configurable delimiter. Empty inputs are skipped.
 
 **Inputs:**
-- `delimiter` — Separator string (default: `, `)
-- `text_0` to `text_6` — Text inputs
+
+- `delimiter`: separator string. Default: `, `.
+- `text_0` to `text_6`: text inputs.
 
 **Outputs:**
-- `text` — Joined result
+
+- `text`: joined result.
 
 ### Yumil Batch Save
 
-**Category:** Yumil/IO
+**Category:** `Yumil/IO`
 
-Saves up to 6 images (JPEG) and an optional text file to a specified folder.
+Saves up to 6 images as JPEG files and an optional text file to a specified folder.
 
 **Inputs:**
-- `parent_folder` — Output directory path
-- `folder_name` — Subfolder name (also used as filename prefix)
-- `text` (optional) — Saved as `{folder_name}.txt`
-- `image_0` to `image_5` — Images saved as `{folder_name}_0.jpg`, etc.
+
+- `parent_folder`: output directory path.
+- `folder_name`: subfolder name, also used as the filename prefix.
+- `text` optional: saved as `{folder_name}.txt`.
+- `image_0` to `image_5`: saved as `{folder_name}_0.jpg`, etc.
+
+## Example Workflows
+
+Example ComfyUI workflows are included in the [`workflow`](workflow) folder.
+
+- [`Simple Example.json`](workflow/Simple%20Example.json): a minimal workflow that requests positive and negative prompts from Yumil MPM.
+- [`Simple Text To Image With Yumil MPM.json`](workflow/Simple%20Text%20To%20Image%20With%20Yumil%20MPM.json): a text-to-image workflow using Yumil MPM prompt categories.
+- [`Controlnet With Yumil MPM.json`](workflow/Controlnet%20With%20Yumil%20MPM.json): a ControlNet example that uses parser-style prompt data.
+
+Some workflows use additional ComfyUI custom nodes and model files. Open the notes inside each workflow to check the required extensions and models.
 
 ## Running Tests
 
 ```bash
-cd tests
 python -m pytest -v
 ```
 
 ## Links
 
-- [Yumil MPM (GitHub)](https://github.com/maigonia/YumilMPM)
+- [Yumil MPM](https://github.com/maigonia/YumilMPM)
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 
 ## License
 
