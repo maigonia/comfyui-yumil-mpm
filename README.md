@@ -28,6 +28,18 @@ pip install -r requirements.txt
 
 Restart ComfyUI after installation.
 
+## Example Workflows
+
+Example ComfyUI workflows are included in the [`workflow`](workflow) folder.
+
+![Yumil MPM auto-send workflow](docs/images/03-auto-send.png)
+
+- [`Simple Example.json`](workflow/Simple%20Example.json): a minimal workflow that requests positive and negative prompts from Yumil MPM.
+- [`Simple Text To Image With Yumil MPM.json`](workflow/Simple%20Text%20To%20Image%20With%20Yumil%20MPM.json): a text-to-image workflow using Yumil MPM prompt categories.
+- [`Controlnet With Yumil MPM.json`](workflow/Controlnet%20With%20Yumil%20MPM.json): a ControlNet example that uses parser-style prompt data.
+
+Some workflows use additional ComfyUI custom nodes and model files. Open the notes inside each workflow to check the required extensions and models.
+
 ## Nodes
 
 ### External Prompt Requester
@@ -186,16 +198,6 @@ Saves up to 6 images as JPEG files and an optional text file to a specified fold
 - `folder_name`: subfolder name, also used as the filename prefix.
 - `text` optional: saved as `{folder_name}.txt`.
 - `image_0` to `image_5`: saved as `{folder_name}_0.jpg`, etc.
-
-## Example Workflows
-
-Example ComfyUI workflows are included in the [`workflow`](workflow) folder.
-
-- [`Simple Example.json`](workflow/Simple%20Example.json): a minimal workflow that requests positive and negative prompts from Yumil MPM.
-- [`Simple Text To Image With Yumil MPM.json`](workflow/Simple%20Text%20To%20Image%20With%20Yumil%20MPM.json): a text-to-image workflow using Yumil MPM prompt categories.
-- [`Controlnet With Yumil MPM.json`](workflow/Controlnet%20With%20Yumil%20MPM.json): a ControlNet example that uses parser-style prompt data.
-
-Some workflows use additional ComfyUI custom nodes and model files. Open the notes inside each workflow to check the required extensions and models.
 
 ## Running Tests
 

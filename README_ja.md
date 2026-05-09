@@ -28,6 +28,18 @@ pip install -r requirements.txt
 
 インストール後、ComfyUI を再起動してください。
 
+## 参考ワークフロー
+
+ComfyUI 用の参考ワークフローを [`workflow`](workflow) フォルダに同梱しています。
+
+![Yumil MPM auto-send workflow](docs/images/03-auto-send.png)
+
+- [`Simple Example.json`](workflow/Simple%20Example.json): Yumil MPM から Positive / Negative プロンプトを取得する最小構成の例です。
+- [`Simple Text To Image With Yumil MPM.json`](workflow/Simple%20Text%20To%20Image%20With%20Yumil%20MPM.json): Yumil MPM のプロンプトカテゴリを使う Text to Image ワークフローです。
+- [`Controlnet With Yumil MPM.json`](workflow/Controlnet%20With%20Yumil%20MPM.json): パーサー形式のプロンプトデータを使う ControlNet ワークフロー例です。
+
+一部のワークフローでは追加の ComfyUI カスタムノードやモデルファイルが必要です。必要な拡張機能やモデルは、各ワークフロー内のメモを確認してください。
+
 ## ノード一覧
 
 ### External Prompt Requester
@@ -186,16 +198,6 @@ Yumil Prompt Parser の `PARSED_DATA` から、指定したインデックスの
 - `folder_name`: 作成するサブフォルダ名。ファイル名のプレフィックスとしても使われます。
 - `text` 任意: `{folder_name}.txt` として保存されます。
 - `image_0` から `image_5`: `{folder_name}_0.jpg` のように保存されます。
-
-## 参考ワークフロー
-
-ComfyUI 用の参考ワークフローを [`workflow`](workflow) フォルダに同梱しています。
-
-- [`Simple Example.json`](workflow/Simple%20Example.json): Yumil MPM から Positive / Negative プロンプトを取得する最小構成の例です。
-- [`Simple Text To Image With Yumil MPM.json`](workflow/Simple%20Text%20To%20Image%20With%20Yumil%20MPM.json): Yumil MPM のプロンプトカテゴリを使う Text to Image ワークフローです。
-- [`Controlnet With Yumil MPM.json`](workflow/Controlnet%20With%20Yumil%20MPM.json): パーサー形式のプロンプトデータを使う ControlNet ワークフロー例です。
-
-一部のワークフローでは追加の ComfyUI カスタムノードやモデルファイルが必要です。必要な拡張機能やモデルは、各ワークフロー内のメモを確認してください。
 
 ## テスト
 
