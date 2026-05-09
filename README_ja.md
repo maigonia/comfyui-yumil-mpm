@@ -202,7 +202,7 @@ Yumil Prompt Parser の `PARSED_DATA` から、指定したインデックスの
 ## テスト
 
 ```bash
-python -m pytest -v
+python -m pytest tests -v --rootdir=tests --import-mode=importlib -p no:cacheprovider --ignore-glob="*pytest-cache-files-*"
 ```
 
 ## リンク

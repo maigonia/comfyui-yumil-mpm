@@ -202,7 +202,7 @@ Saves up to 6 images as JPEG files and an optional text file to a specified fold
 ## Running Tests
 
 ```bash
-python -m pytest -v
+python -m pytest tests -v --rootdir=tests --import-mode=importlib -p no:cacheprovider --ignore-glob="*pytest-cache-files-*"
 ```
 
 ## Links
