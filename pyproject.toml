@@ -1,0 +1,22 @@
+[project]
+name = "yumil-mpm"
+version = "1.0.0"
+description = "ComfyUI custom nodes for integrating workflows with Yumil MPM prompt management."
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+dynamic = ["dependencies"]
+classifiers = [
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[project.urls]
+Repository = "https://github.com/maigonia/comfyui-yumil-mpm"
+Documentation = "https://github.com/maigonia/comfyui-yumil-mpm#readme"
+"Bug Tracker" = "https://github.com/maigonia/comfyui-yumil-mpm/issues"
+
+[tool.comfy]
+PublisherId = "maigonia"
+DisplayName = "Yumil MPM"
