@@ -11,13 +11,13 @@ Custom nodes for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) that integ
 
 ## Installation
 
-### ComfyUI Manager
+### ComfyUI Manager (recommended)
 
-Registration is in preparation. Please use the manual installation steps for now.
+Search for `comfyui-yumil-mpm` in ComfyUI Manager and install. Restart ComfyUI after installation.
 
 ### Manual
 
-Clone this repository into your ComfyUI `custom_nodes` folder:
+Alternatively, clone this repository into your ComfyUI `custom_nodes` folder:
 
 ```bash
 cd ComfyUI/custom_nodes

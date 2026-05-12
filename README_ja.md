@@ -11,13 +11,13 @@
 
 ## インストール
 
-### ComfyUI Manager
+### ComfyUI Manager（推奨）
 
-登録準備中です。現時点では下記の手動インストールをご利用ください。
+ComfyUI Manager で `comfyui-yumil-mpm` と検索してインストールしてください。インストール後、ComfyUI を再起動してください。
 
 ### 手動インストール
 
-ComfyUI の `custom_nodes` フォルダにこのリポジトリを clone してください。
+または、ComfyUI の `custom_nodes` フォルダにこのリポジトリを clone してください。
 
 ```bash
 cd ComfyUI/custom_nodes
