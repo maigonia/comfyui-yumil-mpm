@@ -37,6 +37,8 @@ ComfyUI 用の参考ワークフローを [`workflow`](workflow) フォルダに
 - [`Simple Example.json`](workflow/Simple%20Example.json): Yumil MPM から Positive / Negative プロンプトを取得する最小構成の例です。
 - [`Simple Text To Image With Yumil MPM.json`](workflow/Simple%20Text%20To%20Image%20With%20Yumil%20MPM.json): Yumil MPM のプロンプトカテゴリを使う Text to Image ワークフローです。
 - [`Controlnet With Yumil MPM.json`](workflow/Controlnet%20With%20Yumil%20MPM.json): パーサー形式のプロンプトデータを使う ControlNet ワークフロー例です。
+- [`Regional Prompt With Yumil MPM.json`](workflow/Regional%20Prompt%20With%20Yumil%20MPM.json): Attention Couple と Yumil MPM のカテゴリ別プロンプトを組み合わせた領域指定プロンプトのワークフローです。
+- [`Mask And Pose Tags Creator.json`](workflow/Mask%20And%20Pose%20Tags%20Creator.json): 領域指定プロンプトで使うマスク / ポーズタグ用データを作成するためのワークフローです。
 
 一部のワークフローでは追加の ComfyUI カスタムノードやモデルファイルが必要です。必要な拡張機能やモデルは、各ワークフロー内のメモを確認してください。
 
