@@ -211,6 +211,7 @@ python -m pytest tests -v --rootdir=tests --import-mode=importlib -p no:cachepro
 
 - [Yumil MPM](https://github.com/maigonia/YumilMPM)
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+- [X (@YumilMpm)](https://x.com/YumilMpm)
 
 ## ライセンス
 
