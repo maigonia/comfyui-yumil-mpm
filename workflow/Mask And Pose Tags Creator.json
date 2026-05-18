@@ -48,7 +48,7 @@
           "input_ue_unconnectable": {},
           "version": "7.7"
         },
-        "image": "clipspace/clipspace-painted-masked-1773576849915.png [input]"
+        "image": ""
       },
       "widgets_values": [
         "$26-0",
@@ -321,10 +321,10 @@
           "input_ue_unconnectable": {},
           "version": "7.7"
         },
-        "image": "clipspace/clipspace-painted-masked-1778232894212.png [input]"
+        "image": ""
       },
       "widgets_values": [
-        "clipspace/clipspace-painted-masked-1778232894212.png [input]",
+        "",
         "image"
       ]
     },
