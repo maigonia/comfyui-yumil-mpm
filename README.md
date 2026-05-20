@@ -37,7 +37,7 @@ Example ComfyUI workflows are included in the [`workflow`](workflow) folder.
 - [`Simple Example.json`](workflow/Simple%20Example.json): a minimal workflow that requests positive and negative prompts from Yumil MPM.
 - [`Simple Text To Image With Yumil MPM.json`](workflow/Simple%20Text%20To%20Image%20With%20Yumil%20MPM.json): a text-to-image workflow using Yumil MPM prompt categories.
 - [`Controlnet With Yumil MPM.json`](workflow/Controlnet%20With%20Yumil%20MPM.json): a ControlNet example that uses parser-style prompt data.
-- [`Regional Prompt With Yumil MPM.json`](workflow/Regional%20Prompt%20With%20Yumil%20MPM.json): a regional prompting workflow that combines Attention Couple with per-region prompts from Yumil MPM categories.
+- [`Regional Prompt With Yumil MPM.json`](workflow/Regional%20Prompt%20With%20Yumil%20MPM.json): a regional prompting workflow that combines Attention Couple with per-region prompts from Yumil MPM categories. ([detailed usage](https://civitai.com/articles/30276/super-fast-regional-prompt-setup-with-yumil-mpm))
 - [`Mask And Pose Tags Creator.json`](workflow/Mask%20And%20Pose%20Tags%20Creator.json): a helper workflow for authoring the mask and pose tag data used by the regional prompting workflow.
 
 Some workflows use additional ComfyUI custom nodes and model files. Open the notes inside each workflow to check the required extensions and models.
