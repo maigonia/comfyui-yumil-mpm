@@ -6,3 +6,4 @@ memo for dev/
 .venv/
 pytest-cache-files-*/
 node.zip
+private_notes/
