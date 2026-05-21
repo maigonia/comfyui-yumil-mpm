@@ -1,6 +1,6 @@
 [project]
 name = "yumil-mpm"
-version = "1.0.1"
+version = "1.1.0"
 description = "ComfyUI custom nodes for integrating workflows with Yumil MPM prompt management."
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
