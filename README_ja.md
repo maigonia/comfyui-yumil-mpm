@@ -173,6 +173,29 @@ Yumil Prompt Parser の `PARSED_DATA` から、指定したインデックスの
 - `text`: LoRA タグが取り除かれたテキスト。
 - `loras`: 抽出された LoRA タグ。
 
+### Yumil Prompt Lora Loader
+
+**カテゴリ:** `Yumil/Loaders`
+
+プロンプト中の `<lora:name:strength>` タグを解析し、該当する LoRA を `MODEL`（および任意で `CLIP`）に適用したうえで、`strip_tags` が `true` の場合はタグを取り除いたプロンプトを返します。
+
+LoRA ファイル名は `folder_paths.get_filename_list("loras")` に対して 7 段階のファジー一致（完全一致 → 拡張子なし → ベース名 → ベース名（拡張子なし）→ 部分一致）で解決するため、プロンプト側でファイル名を多少省略していても通常は正しくマッチします。`<lora:name:-0.3>` のような負の strength も使えます。strength が `0` の場合や名前が解決できなかったタグはエラーにせずログを残してスキップします。
+
+`clip` は任意入力です。未接続の場合、LoRA は MODEL のみに適用されます（CLIP 強度は内部的に `0` として扱われます）。これにより、CLIP を取り扱わない LTXV などのパイプラインでも利用できます。
+
+**入力:**
+
+- `model` (MODEL, 必須): LoRA を適用する対象のモデル。
+- `prompt` (STRING, 複数行, 必須): `<lora:...>` タグを含む可能性のあるプロンプト。
+- `strip_tags` (BOOLEAN, 必須, デフォルト `true`): `true` の場合、出力 `TEXT` から `<lora:...>` タグが取り除かれます。
+- `clip` (CLIP, 任意): 接続した場合、LoRA の strength が CLIP にも適用されます。
+
+**出力:**
+
+- `MODEL`: マッチした LoRA がすべて適用された MODEL。
+- `CLIP`: LoRA が適用された CLIP（`clip` 未接続の場合は `None`）。
+- `TEXT`: `strip_tags` が `true` のときは `<lora:...>` タグを取り除いたプロンプト、`false` のときは元のプロンプト。
+
 ### Yumil Text Join
 
 **カテゴリ:** `Yumil/Prompt`
@@ -212,6 +235,10 @@ python -m pytest tests -v --rootdir=tests --import-mode=importlib -p no:cachepro
 - [Yumil MPM](https://github.com/maigonia/YumilMPM)
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 - [X (@YumilMpm)](https://x.com/YumilMpm)
+
+## クレジット
+
+- **Yumil Prompt Lora Loader** は [rgthree-comfy](https://github.com/rgthree/rgthree-comfy)（MIT License, Copyright (c) 2023 Regis Gaughan, III）の LoRA タグ正規表現とファジーファイル名マッチング処理を流用しています。詳細は [`LICENSE`](LICENSE) の Third-Party Notices を参照してください。
 
 ## ライセンス
 

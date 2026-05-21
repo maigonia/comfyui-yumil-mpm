@@ -3,6 +3,7 @@ from .nodes.prompt import NODE_CLASS_MAPPINGS as prompt_class
 from .nodes.image import NODE_CLASS_MAPPINGS as image_class
 from .nodes.value import NODE_CLASS_MAPPINGS as value_class
 from .nodes.save import NODE_CLASS_MAPPINGS as save_class
+from .nodes.lora import NODE_CLASS_MAPPINGS as lora_class
 
 NODE_CLASS_MAPPINGS = {
     **api_class,
@@ -10,6 +11,7 @@ NODE_CLASS_MAPPINGS = {
     **image_class,
     **value_class,
     **save_class,
+    **lora_class,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -21,6 +23,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "YumilValueReader": "Yumil Value Reader",
     "YumilTextJoin": "Yumil Text Join",
     "YumilBatchSave": "Yumil Batch Save",
+    "YumilPromptLoraLoader": "Yumil Prompt Lora Loader",
 }
 
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

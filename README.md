@@ -173,6 +173,29 @@ Extracts and removes all `<lora:name:weight>` tags from text.
 - `text`: clean text with LoRA tags removed.
 - `loras`: extracted LoRA tags concatenated together.
 
+### Yumil Prompt Lora Loader
+
+**Category:** `Yumil/Loaders`
+
+Parses `<lora:name:strength>` tags from a prompt, applies the matching LoRAs to a `MODEL` (and optionally a `CLIP`), and returns the prompt with the tags optionally stripped.
+
+Lora file names are resolved against `folder_paths.get_filename_list("loras")` using a 7-step fuzzy match (exact path, with/without extension, basename, basename without extension, substring fallback), so partial names from prompts usually still resolve correctly. Negative strengths (e.g. `<lora:name:-0.3>`) are supported. Tags whose strength is `0` and tags whose name cannot be resolved are skipped with a log message instead of erroring.
+
+`clip` is optional: when it is not connected, the LoRA is applied to the model only (CLIP strength forced to `0`). This makes the node usable with pipelines that do not expose a CLIP, such as LTXV.
+
+**Inputs:**
+
+- `model` (MODEL, required): model to apply LoRAs to.
+- `prompt` (STRING, multiline, required): prompt text that may contain `<lora:...>` tags.
+- `strip_tags` (BOOLEAN, required, default `true`): if `true`, the returned `TEXT` has all `<lora:...>` tags removed.
+- `clip` (CLIP, optional): when connected, LoRA strengths are applied to CLIP as well.
+
+**Outputs:**
+
+- `MODEL`: model with all matched LoRAs applied.
+- `CLIP`: CLIP with LoRAs applied (or `None` if `clip` was not provided).
+- `TEXT`: the prompt, with `<lora:...>` tags removed when `strip_tags` is `true`, otherwise unchanged.
+
 ### Yumil Text Join
 
 **Category:** `Yumil/Prompt`
@@ -212,6 +235,10 @@ python -m pytest tests -v --rootdir=tests --import-mode=importlib -p no:cachepro
 - [Yumil MPM](https://github.com/maigonia/YumilMPM)
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 - [X (@YumilMpm)](https://x.com/YumilMpm)
+
+## Credits
+
+- **Yumil Prompt Lora Loader** reuses the LoRA tag regex and fuzzy filename matching logic from [rgthree-comfy](https://github.com/rgthree/rgthree-comfy) (MIT License, Copyright (c) 2023 Regis Gaughan, III). See [`LICENSE`](LICENSE) for the full third-party notice.
 
 ## License
 
